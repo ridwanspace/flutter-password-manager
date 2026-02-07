@@ -228,7 +228,7 @@ erDiagram
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/flutter-password-manager.git
+git clone https://github.com/ridwanspace/flutter-password-manager.git
 cd flutter-password-manager
 
 # Install dependencies
