@@ -24,13 +24,9 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    // obscureText is broken on Flutter web (engine assertion bug),
-    // so we disable it on web. Password masking only works on native.
-    final useObscure = !kIsWeb && _obscure;
-
     return TextFormField(
       controller: widget.controller,
-      obscureText: useObscure,
+      obscureText: _obscure,
       validator: widget.validator,
       decoration: InputDecoration(
         labelText: widget.labelText,
@@ -38,11 +34,10 @@ class _PasswordFieldState extends State<PasswordField> {
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (!kIsWeb)
-              IconButton(
-                icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
-                onPressed: () => setState(() => _obscure = !_obscure),
-              ),
+            IconButton(
+              icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+              onPressed: () => setState(() => _obscure = !_obscure),
+            ),
             if (widget.suffixIcon != null) widget.suffixIcon!,
           ],
         ),

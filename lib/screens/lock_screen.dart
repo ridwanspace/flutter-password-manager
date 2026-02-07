@@ -45,7 +45,7 @@ class _LockScreenState extends State<LockScreen> {
     if (!mounted) return;
     setState(() => _isLoading = false);
     if (!success) {
-      setState(() => _error = 'Failed to set up master password');
+      setState(() => _error = authProvider.lastError ?? 'Failed to set up master password');
     }
   }
 

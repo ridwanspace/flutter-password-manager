@@ -30,16 +30,22 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? _lastError;
+  String? get lastError => _lastError;
+
   Future<bool> setupMasterPassword(String password) async {
     try {
       final salt = await _authService.setupMasterPassword(password);
       _derivedKey = await EncryptionService.deriveKey(password, salt);
       _isMasterPasswordSet = true;
       _isAuthenticated = true;
+      _lastError = null;
       notifyListeners();
       return true;
-    } catch (e) {
+    } catch (e, st) {
+      _lastError = e.toString();
       debugPrint('setupMasterPassword error: $e');
+      debugPrint('stackTrace: $st');
       return false;
     }
   }

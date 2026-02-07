@@ -12,7 +12,7 @@ A secure, cross-platform password manager built with Flutter. Protects your cred
 
 | Feature | Description |
 |---|---|
-| **Master Password** | Single master password to unlock your vault with SHA-256 hashing |
+| **Master Password** | Single master password to unlock your vault with SHA-256 hashing. Shows unlock screen if already set, or create screen on first use |
 | **AES-256 Encryption** | All passwords and notes encrypted with AES-256-CBC |
 | **PBKDF2 Key Derivation** | 100,000 iteration PBKDF2-HMAC-SHA256 key stretching |
 | **Password Generator** | Configurable generator (4-64 chars) with strength indicator |
@@ -20,6 +20,7 @@ A secure, cross-platform password manager built with Flutter. Protects your cred
 | **Search & Filter** | Real-time search across title, username, and URL |
 | **Auto-Lock** | Vault locks automatically when app goes to background |
 | **Clipboard Security** | Auto-clears clipboard after 30 seconds |
+| **Password Visibility Toggle** | Show/hide password on all input fields across all platforms |
 | **Cross-Platform** | Runs on Android, iOS, Web, Linux, macOS, and Windows |
 
 ## Architecture
@@ -168,7 +169,7 @@ lib/
 | Language | Dart 3.6+ | Application logic |
 | State Management | `provider` | Reactive ChangeNotifier-based state |
 | Database | `sqflite` | Local SQLite storage |
-| Database (Web) | `sqflite_common_ffi_web` | SQLite via WASM for web |
+| Database (Web) | `sqflite_common_ffi_web` | SQLite via WASM for web (in-memory per session) |
 | Encryption | `encrypt` | AES-256-CBC encryption/decryption |
 | Hashing | `crypto` | SHA-256 and HMAC-SHA256 |
 | Date Formatting | `intl` | Localized date/time display |
@@ -241,13 +242,14 @@ flutter pub get
 # Android / iOS
 flutter run
 
-# Web (requires WASM setup)
-dart run sqflite_common_ffi_web:setup
+# Web
 flutter run -d chrome
 
 # Linux / macOS / Windows
 flutter run -d linux
 ```
+
+> **Note (Web):** On web, the SQLite database runs in-memory via WASM and does not persist across page reloads or server restarts. Data is available only within the current browser session. On native platforms (Android, iOS, Desktop), data is fully persisted to disk.
 
 ## Security Overview
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/master_password.dart';
@@ -19,8 +20,14 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, AppConstants.dbName);
+    String path;
+    if (kIsWeb) {
+      // On web, getDatabasesPath() is not supported; use the name directly.
+      path = AppConstants.dbName;
+    } else {
+      final dbPath = await getDatabasesPath();
+      path = join(dbPath, AppConstants.dbName);
+    }
 
     return await openDatabase(
       path,
